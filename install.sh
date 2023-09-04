@@ -47,6 +47,9 @@ fi
 # Extract to /opt
 tar xf "$TAR_FILE" -C /opt
 
+# Set permissions for /opt/mullvad-browser to be readable and executable by all users
+sudo chmod -R 755 /opt/mullvad-browser
+
 # Register the application
 cd /opt/mullvad-browser || exit
 ./start-mullvad-browser.desktop --register-app
