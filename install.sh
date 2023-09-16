@@ -2,7 +2,7 @@
 
 # Directly install necessary tools
 sudo apt update
-sudo apt install -y curl gpg zenity libdbus-glib-1-dev
+sudo apt install -y curl gpg libdbus-glib-1-dev
 
 # Working directory
 WORK_DIR="/tmp/mullvad_browser"
