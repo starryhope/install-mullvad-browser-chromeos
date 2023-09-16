@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# Directly install necessary tools
+# Install necessary dependencies
 sudo apt update
-sudo apt install -y gpg libdbus-glib-1-dev
+sudo apt install -y gpg libdbus-glib-1-2
 
 # Working directory
 WORK_DIR="/tmp/mullvad_browser"
