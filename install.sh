@@ -1,16 +1,8 @@
 #!/bin/bash
 
-# Function to check if a command is available
-check_command() {
-  if ! command -v "$1" &> /dev/null; then
-    echo "$1 not found. Installing..."
-    sudo apt install -y "$1"
-  fi
-}
-
-# Check if GnuPG and curl are installed
-check_command gpg
-check_command curl
+# Directly install necessary tools
+sudo apt update
+sudo apt install -y curl gpg zenity libdbus-glib-1-dev
 
 # Working directory
 WORK_DIR="/tmp/mullvad_browser"
@@ -44,14 +36,16 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-# Extract to /opt
-tar xf "$TAR_FILE" -C /opt
+# Extract to ~/.local/share
+INSTALL_DIR="${HOME}/.local/share/mullvad-browser"
+mkdir -p "$INSTALL_DIR"
+tar xf "$TAR_FILE" -C "$INSTALL_DIR"
 
-# Set permissions for /opt/mullvad-browser to be readable and executable by all users
-sudo chmod -R 755 /opt/mullvad-browser
+# Set permissions for ~/.local/share/mullvad-browser to be readable and executable by the user
+chmod -R 755 "$INSTALL_DIR"
 
 # Register the application
-cd /opt/mullvad-browser || exit
+cd "$INSTALL_DIR" || exit
 ./start-mullvad-browser.desktop --register-app
 
 # Cleanup
