@@ -1,6 +1,19 @@
 #!/bin/bash
 
-echo "Installing necessary dependencies..."
+# Functions to print highlighted messages in a
+highlight_msg() {
+    echo -e "\e[1;33m####################################################\e[0m" # Yellow color
+    echo -e "\e[1;33m# $1\e[0m" # Yellow color
+    echo -e "\e[1;33m####################################################\e[0m" # Yellow color
+}
+
+highlight_msg_green() {
+    echo -e "\e[1;32m#########################\e[0m" # Green color
+    echo -e "\e[1;32m# $1\e[0m"                           # Green color
+    echo -e "\e[1;32m#########################\e[0m" # Green color
+}
+
+highlight_msg "Installing necessary dependencies..."
 sudo apt update
 sudo apt install -y gpg libdbus-glib-1-2
 echo "Dependencies installed successfully."
@@ -21,41 +34,37 @@ mkdir -p "$WORK_DIR"
 cd "$WORK_DIR"
 
 # Download and import Tor Browser Developers' signing key
-echo "Importing Tor Browser Developers' signing key..."
+highlight_msg "Importing Tor Browser Developers' signing key..."
 gpg --auto-key-locate nodefault,wkd --locate-keys torbrowser@torproject.org
 
 # Set trust level to ultimate
 echo -e "trust\n5\ny\nquit" | gpg --command-fd 0 --edit-key EF6E286DDA85EA2A4BA7DE684E2C6E8793298290
 
 # Download files using wget
-echo "Downloading Mullvad Browser and its signature..."
+highlight_msg "Downloading Mullvad Browser and its signature..."
 wget "$MULLVAD_URL" -O "$TAR_FILE"
 wget "$SIGNATURE_URL" -O "$SIG_FILE"
 echo "Download complete."
 
 # Verify the integrity of the downloaded file
-echo "Verifying the integrity of the downloaded file..."
+highlight_msg "Verifying the integrity of the downloaded file..."
 gpg --verify "$SIG_FILE" "$TAR_FILE"
 if [ $? -ne 0 ]; then
-    echo "GPG verification failed."
+    echo -e "\e[1;31mGPG verification failed.\e[0m" # Red color for error message
     exit 1
 fi
 echo "Verification successful."
 
 # Extract to ~/.local/share
-echo "Extracting the downloaded browser..."
+highlight_msg "Installing..."
 INSTALL_DIR="${HOME}/.local/share"
 mkdir -p "$INSTALL_DIR"
 tar xf "$TAR_FILE" -C "$INSTALL_DIR"
-echo "Extraction complete."
 
 # Set permissions
-echo "Setting permissions..."
 chmod -R 755 "$INSTALL_DIR"
-echo "Permissions set."
 
 # Create a desktop file
-echo "Creating a menu shortcut..."
 DESKTOP_FILE_DIR="${HOME}/.local/share/applications"
 DESKTOP_FILE_PATH="${DESKTOP_FILE_DIR}/start-mullvad-browser.desktop"
 mkdir -p "$DESKTOP_FILE_DIR"
@@ -74,6 +83,5 @@ StartupWMClass=Mullvad Browser
 EOL
 
 # Cleanup
-echo "Cleaning up temporary files..."
 rm -rf "$WORK_DIR"
-echo "Installation complete!"
+highlight_msg_green "Installation complete!"
