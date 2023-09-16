@@ -37,7 +37,7 @@ if [ $? -ne 0 ]; then
 fi
 
 # Extract to ~/.local/share
-INSTALL_DIR="${HOME}/.local/share/mullvad-browser"
+INSTALL_DIR="${HOME}/.local/share"
 mkdir -p "$INSTALL_DIR"
 tar xf "$TAR_FILE" -C "$INSTALL_DIR"
 
@@ -45,7 +45,7 @@ tar xf "$TAR_FILE" -C "$INSTALL_DIR"
 chmod -R 755 "$INSTALL_DIR"
 
 # Register the application
-cd "$INSTALL_DIR" || exit
+cd "$INSTALL_DIR"/mullvad-browser || exit
 ./start-mullvad-browser.desktop --register-app
 
 # Cleanup
