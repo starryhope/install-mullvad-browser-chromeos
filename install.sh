@@ -44,9 +44,24 @@ tar xf "$TAR_FILE" -C "$INSTALL_DIR"
 # Set permissions for ~/.local/share/mullvad-browser to be readable and executable by the user
 chmod -R 755 "$INSTALL_DIR"
 
-# Register the application
-cd "$INSTALL_DIR"/mullvad-browser || exit
-./start-mullvad-browser.desktop --register-app
+# Create a desktop file
+DESKTOP_FILE_DIR="${HOME}/.local/share/applications"
+DESKTOP_FILE_PATH="${DESKTOP_FILE_DIR}/start-mullvad-browser.desktop"
+
+mkdir -p "$DESKTOP_FILE_DIR"
+
+cat > "$DESKTOP_FILE_PATH" <<EOL
+[Desktop Entry]
+Type=Application
+Name=Mullvad Browser
+GenericName=Web Browser
+Comment=Mullvad Browser  is +1 for privacy and −1 for mass surveillance
+Categories=Network;WebBrowser;Security;
+Exec=${HOME}/.local/share/mullvad-browser/Browser/start-mullvad-browser --detach
+X-MullvadBrowser-ExecShell=${HOME}/.local/share/mullvad-browser/Browser/start-mullvad-browser --detach
+Icon=${HOME}/.local/share/mullvad-browser/Browser/browser/chrome/icons/default/default128.png
+StartupWMClass=Mullvad Browser
+EOL
 
 # Cleanup
 rm -rf "$WORK_DIR"
