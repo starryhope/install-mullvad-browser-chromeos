@@ -2,7 +2,7 @@
 
 # Directly install necessary tools
 sudo apt update
-sudo apt install -y curl gpg libdbus-glib-1-dev
+sudo apt install -y gpg libdbus-glib-1-dev
 
 # Working directory
 WORK_DIR="/tmp/mullvad_browser"
@@ -25,9 +25,9 @@ gpg --auto-key-locate nodefault,wkd --locate-keys torbrowser@torproject.org
 # Set trust level to ultimate
 echo -e "trust\n5\ny\nquit" | gpg --command-fd 0 --edit-key EF6E286DDA85EA2A4BA7DE684E2C6E8793298290
 
-# Download files
-curl -L "$MULLVAD_URL" -o "$TAR_FILE"
-curl -L "$SIGNATURE_URL" -o "$SIG_FILE"
+# Download files using wget
+wget "$MULLVAD_URL" -O "$TAR_FILE"
+wget "$SIGNATURE_URL" -O "$SIG_FILE"
 
 # Verify the integrity of the downloaded file
 gpg --verify "$SIG_FILE" "$TAR_FILE"
