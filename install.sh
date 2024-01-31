@@ -22,8 +22,8 @@ echo "Dependencies installed successfully."
 WORK_DIR="/tmp/mullvad_browser"
 
 # Download URLs
-MULLVAD_URL="https://mullvad.net/en/download/browser/linux64/latest"
-SIGNATURE_URL="https://mullvad.net/en/download/browser/linux64/latest/signature"
+MULLVAD_URL="https://mullvad.net/en/download/browser/linux-x86_64/latest"
+SIGNATURE_URL="https://mullvad.net/en/download/browser/linux-x86_64/latest/signature"
 
 # File names
 TAR_FILE="mullvad_browser.tar.xz"
